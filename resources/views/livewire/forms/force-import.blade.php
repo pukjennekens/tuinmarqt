@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Queue;
 use App\Jobs\ImportArticles;
 use App\Jobs\ImportArticleGroups;
 use App\Jobs\ExportArticles;
+use App\Jobs\ExportArticleGroups;
 
 new class extends Component
 {
@@ -26,8 +27,8 @@ new class extends Component
         }
 
         // Call the import job
-        dispatch(new ImportArticles());
         dispatch(new ImportArticleGroups());
+        dispatch(new ImportArticles());
 
         $this->disabled = true;
         $this->dispatch('notify', type: 'success', message: 'Import gestart');
@@ -47,6 +48,7 @@ new class extends Component
         }
 
         // Call the export job
+        dispatch(new ExportArticleGroups());
         dispatch(new ExportArticles());
 
         $this->disabled = true;

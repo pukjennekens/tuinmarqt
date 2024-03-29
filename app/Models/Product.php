@@ -84,6 +84,22 @@ class Product extends Model
             }
         }
 
+        if(isset($this->data['group']) && ProductCategory::where('external_id', $this->data['group'])->exists()) {
+            $productCategory     = ProductCategory::where('external_id', $this->data['group'])->first();
+
+            $data['categories'] = [
+                [
+                    'id' => $productCategory->woocommerce_id,
+                ],
+            ];
+
+            if($productCategory->parent && $productCategory->parent->woocommerce_id) {
+                $data['categories'][] = [
+                    'id' => $productCategory->parent->woocommerce_id,
+                ];
+            }
+        }
+
         Log::debug('Product to WooCommerce array', $data);
 
         return $data;
