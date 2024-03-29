@@ -25,7 +25,9 @@ class AppServiceProvider extends ServiceProvider
             TroubleFree::initialize();
             WooCommerce::initialize();
         } catch(\Illuminate\Database\QueryException $e) {
-            // Log the error
+            // Do nothing
+        } catch (\Exception $e) {
+            // Do nothing
         }
     }
 }
