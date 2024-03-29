@@ -79,7 +79,7 @@ class Product extends Model
             if(isset($this->data['customFields'][$field['name']])) {
                 $data['meta_data'][] = [
                     'key'   => 'troublefree_' . $field['key'],
-                    'value' => isset($this->data['customFields'][$field['name']]) ? $this->data['customFields'][$field['name']] : '',
+                    'value' => isset($this->data['customFields'][$field['name']]) ? explode(',', $this->data['customFields'][$field['name']]) : '',
                 ];
 
                 if($field['attribute'])
