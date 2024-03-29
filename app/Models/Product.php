@@ -49,7 +49,7 @@ class Product extends Model
             'name'              => $this->name,
             'type'              => 'simple',
             'status'            => 'publish',
-            'sku'               => $this->data['barCode'],
+            'sku'               => $this->data['barCode'] ?? '',
             'short_description' => $this->data['description'] ?? '',
             'regular_price'     => $this->data['salesPrice']['inclVat'] ?? 0,
             'meta_data'         => [
