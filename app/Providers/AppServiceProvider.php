@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use App\API\TroubleFree;
 use App\API\WooCommerce;
+use App\Models\User;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -29,5 +31,9 @@ class AppServiceProvider extends ServiceProvider
         } catch (\Exception $e) {
             // Do nothing
         }
+
+        Gate::define('viewPulse', function () {
+            return auth()->check();
+        });    
     }
 }
