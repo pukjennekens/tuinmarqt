@@ -60,8 +60,8 @@ class ExportArticles implements ShouldQueue
             }
         }
 
-        if($articles->hasMorePages()) {
-            ExportArticles::dispatch($this->page + 1, $this->perPage);
-        }
+        // if($articles->hasMorePages()) {
+        //     ExportArticles::dispatch($this->page + 1, $this->perPage);
+        // }
     }
 }

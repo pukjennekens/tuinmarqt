@@ -35,28 +35,40 @@ return [
 
     'troublefree_custom_fields' => [
         [
-            'name' => 'Merk',
-            'key'  => 'brand',
+            'name'      => 'Merk',
+            'key'       => 'brand',
+            'attribute' => true,
+            'visible'   => true,
         ],
         [
-            'name' => 'Kleur',
-            'key'  => 'color',
+            'name'      => 'Kleur',
+            'key'       => 'color',
+            'attribute' => true,
+            'visible'   => true,
         ],
         [
-            'name' => 'Materiaal',
-            'key'  => 'material',
+            'name'      => 'Materiaal',
+            'key'       => 'material',
+            'attribute' => true,
+            'visible'   => true,
         ],
         [
-            'name' => 'Afmetingen',
-            'key'  => 'dimensions',
+            'name'      => 'Afmetingen',
+            'key'       => 'dimensions',
+            'attribute' => true,
+            'visible'   => false,
         ],
         [
-            'name' => 'Stroefheid',
-            'key'  => 'grip',
+            'name'      => 'Stroefheid',
+            'key'       => 'grip',
+            'attribute' => true,
+            'visible'   => true,
         ],
         [
-            'name' => 'Geschikt voor',
-            'key'  => 'suitable_for',
+            'name'      => 'Geschikt voor',
+            'key'       => 'suitable_for',
+            'attribute' => true,
+            'visible'   => true,
         ],
     ],
 ];

@@ -81,6 +81,13 @@ class Product extends Model
                     'key'   => 'troublefree_' . $field['key'],
                     'value' => isset($this->data['customFields'][$field['name']]) ? $this->data['customFields'][$field['name']] : '',
                 ];
+
+                if($field['attribute'])
+                    $data['attributes'][] = [
+                        'name'    => $field['name'],
+                        'options' => explode(',', $this->data['customFields'][$field['name']]),
+                        'visible' => $field['visible'] ?? false,
+                    ];
             }
         }
 
