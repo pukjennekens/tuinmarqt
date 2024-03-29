@@ -21,7 +21,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        TroubleFree::initialize();
-        WooCommerce::initialize();
+        try {
+            TroubleFree::initialize();
+            WooCommerce::initialize();
+        } catch(\Illuminate\Database\QueryException $e) {
+            // Log the error
+        }
     }
 }
