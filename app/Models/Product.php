@@ -92,7 +92,7 @@ class Product extends Model
         }
 
         if(isset($this->data['group']) && ProductCategory::where('external_id', $this->data['group'])->exists()) {
-            $productCategory     = ProductCategory::where('external_id', $this->data['group'])->first();
+            $productCategory     = ProductCategory::where('external_id', $this->data['group'])->where('type', 'article_group')->firstOrFail();
 
             $data['categories'] = [
                 [
