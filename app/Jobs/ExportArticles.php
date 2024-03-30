@@ -43,8 +43,11 @@ class ExportArticles implements ShouldQueue
              */
             if($article['data']['showInWebshop'] === false) continue;
 
-            if($article->woocommerce_id) {
+            if($article->active && $article->woocommerce_id) {
                 $woocommerceData['update'][] = $article->toWooCommerceArray();
+            } elseif(!$article->active && $article->woocommerce_id) {
+                $woocommerceData['delete'][] = $article->woocommerce_id;
+                $article->update(['woocommerce_id' => null]);
             } else {
                 $woocommerceData['create'][] = $article->toWooCommerceArray();
             }

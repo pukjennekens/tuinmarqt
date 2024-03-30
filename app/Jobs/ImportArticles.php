@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\API\TroubleFree;
+use App\API\WooCommerce;
 use App\Models\Product;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -32,6 +33,11 @@ class ImportArticles implements ShouldQueue
      */
     public function handle(): void
     {
+        if($this->page === 1)
+            Product::query()->update([
+                'active' => false,
+            ]);
+
         Log::debug('Importing articles', ['page' => $this->page, 'perPage' => $this->perPage]);
 
         $articles = TroubleFree::getArticles($this->page, $this->perPage);
@@ -42,6 +48,7 @@ class ImportArticles implements ShouldQueue
             ], [
                 'name' => $article['description'] ?? '',
                 'data' => $article,
+                'active' => true,
             ]);
 
             $product->images()->delete();
@@ -57,6 +64,6 @@ class ImportArticles implements ShouldQueue
 
         if($articles['meta']['pagination']['current_page'] < $articles['meta']['pagination']['total_pages']) {
             ImportArticles::dispatch($this->page + 1, $this->perPage);
-        }
+        } 
     }
 }
