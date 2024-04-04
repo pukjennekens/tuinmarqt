@@ -79,6 +79,8 @@ class TroubleFree
 
         $response = Http::withHeaders(self::$headers)->{$method}($url, $data);
 
+        Log::debug('Received data from TroubleFree API', ['status' => $response->status(), 'data' => $response->json()]);
+
         if($cache && $response->status() == 200) Cache::put($cacheKey, $response->json(), $ttl);
 
         return $response->json();
@@ -163,5 +165,37 @@ class TroubleFree
         // if($cache && $asset->status() == 200) Cache::put($cacheKey, $asset, $ttl);
 
         return $asset;
+    }
+
+    /**
+     * Find a relation by its postal code and house number
+     * 
+     * @param string $postalCode The postal code of the relation
+     * @param string $houseNumber The house number of the relation
+     * @param bool $cache Whether to cache the response
+     * @param int $ttl The time-to-live of the cache
+     * @return array|false The relation or false if the relation could not be found
+     */
+    public static function findRelationByPostalCodeAndHouseNumber(string $postalCode, string $houseNumber, bool $cache = true, int $ttl = 3600)
+    {
+        $query = [
+            'postal_code'  => $postalCode,
+            'house_number' => $houseNumber,
+            'page'         => 1,
+            'per_page'     => 1,
+        ];
+
+        return self::request('get', '/relations', $query, $cache, $ttl);
+    }
+
+    /**
+     * Create a relation
+     * 
+     * @param array $data The data to create the relation with
+     * @return array|false The relation or false if the relation could not be created
+     */
+    public static function createRelation(array $data)
+    {
+        return self::request('post', '/relations', $data);
     }
 }

@@ -35,7 +35,7 @@ class ExportArticles implements ShouldQueue
         $woocommerce = WooCommerce::getClient();
         $articles    = Product::paginate($this->perPage, ['*'], 'page', $this->page);
 
-        $woocommerceData = ['create' => [], 'update' => []];
+        $woocommerceData = ['create' => [], 'update' => [], 'delete' => []];
 
         foreach($articles as $article) {
             /**

@@ -16,6 +16,11 @@ return [
             'description' => 'Het wachtwoord dat je gebruikt voor in te loggen op TroubleFree.',
             'type'        => 'password',
         ],
+        'troublefree_shipping_product_id' => [
+            'name'        => 'TroubleFree Verzendkosten Artikel ID',
+            'description' => 'Het artikel ID van het product dat je gebruikt voor de verzendkosten in TroubleFree. Deze kan je vinden in TroubleFree onder het product (bestelcode).',
+            'type'        => 'number',
+        ],
         'woocommerce_website_url' => [
             'name'        => 'WooCommerce Website URL',
             'description' => 'De URL van de WooCommerce website waarop de artikelen geïmporteerd moeten worden.',
