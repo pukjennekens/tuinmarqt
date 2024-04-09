@@ -25,6 +25,8 @@ class WebhookController extends Controller
         if(in_array($topic, ['order.created', 'order.updated'])) {
             $this->handleOrderCreatedUpdated($request);
         }
+
+        return response(null, 200);
     }
 
     /**

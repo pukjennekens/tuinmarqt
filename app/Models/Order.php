@@ -87,7 +87,7 @@ class Order extends Model
 
                 foreach($order->data['shipping_lines'] as $line) {
                     $orderLines[] = [
-                        'article'  => config('constants.troublefree_shipping_product_id'),
+                        'article'  => Setting::get('troublefree_shipping_product_id'),
                         'quantity' => '1',
                         'price'    => strval( floatval( $line['total'] ) ),
                     ];

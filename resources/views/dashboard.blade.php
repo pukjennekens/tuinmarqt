@@ -19,6 +19,10 @@
                 <x-dashboard-tab title="Import/export forceren" :status="Queue::size() == 0 ? 'success' : 'warning'">
                     <livewire:forms.force-import />
                 </x-dashboard-tab>
+
+                <x-dashboard-tab title="Instructies">
+                    
+                </x-dashboard-tab>
             </x-dashboard-tabs>
         </div>
     </div>
