@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\API\TroubleFree;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 
 class Order extends Model
 {
@@ -94,20 +95,32 @@ class Order extends Model
                 }
 
                 $response = TroubleFree::request('post', '/orders', [
-                    'employee'        => 1,
-                    'debtor'          => $relation['id'],
-                    'deliveryMethod'  => 1,
-                    'orderType'       => 1,
-                    'reference'       => $order->data['number'],
-                    'extraComment'    => $order->data['customer_note'] ?? 'Geen opmerkingen',
-                    'deliveryAddress' => [
+                    'employee'           => 1,
+                    'debtor'             => $relation['id'],
+                    'deliveryMethod'     => 1,
+                    'orderType'          => 1,
+                    'reference'          => $order->data['number'],
+                    'extraComment'       => $order->data['customer_note'] ?? 'Geen opmerkingen',
+                    'deliveryAddress'    => [
                         'attentionOf' => $order->data['billing']['first_name'] . ' ' . $order->data['billing']['last_name'],
                         'street'      => $order->data['shipping']['address_1'] ?? $order->data['billing']['address_1'],
                         'postcode'    => $order->data['shipping']['postcode'] ?? $order->data['billing']['postcode'],
                         'city'        => $order->data['shipping']['city'] ?? $order->data['billing']['city'],
                         'country'     => $order->data['shipping']['country'] ?? $order->data['billing']['country'],
                     ],
-                    'lines'           => $orderLines,
+                    'lines'              => $orderLines,
+                    // 'invoicingCondition' => 6,
+                ]);
+
+                $payment_response = TroubleFree::request('post', '/orders/' . $response['data']['id'] . '/payments', [
+                    'amount'   => $order->data['total'],
+                    'method'   => 3,
+                    'currency' => 1,
+                ]);
+
+                Log::info('Order exported to TroubleFree', [
+                    'response' => $response,
+                    'payment_response' => $payment_response,
                 ]);
 
                 if($response['status'] == 201) {
