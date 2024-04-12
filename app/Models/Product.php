@@ -58,6 +58,10 @@ class Product extends Model
                     'key'   => 'external_id',
                     'value' => $this->external_id,
                 ],
+                [
+                    'key'   => 'price_unit',
+                    'value' => $this->data['unit'] ?? '',
+                ],
             ],
             // 'images'            => $this->images->map(function($image) {
             //     return [
