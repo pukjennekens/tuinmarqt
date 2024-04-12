@@ -63,11 +63,11 @@ class Product extends Model
                     'value' => $this->data['unit'] ?? '',
                 ],
             ],
-            // 'images'            => $this->images->map(function($image) {
-            //     return [
-            //         'src' => route('image', ['id' => $image->external_id]) . '.jpeg',
-            //     ];
-            // })->toArray(),
+            'images'            => $this->images->map(function($image) {
+                return [
+                    'src' => route('image', ['id' => $image->external_id]) . '.jpeg',
+                ];
+            })->toArray(),
         ];
 
         if($this->woocommerce_id) $data['id'] = $this->woocommerce_id;
