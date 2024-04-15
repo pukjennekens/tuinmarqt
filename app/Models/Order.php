@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\API\TroubleFree;
+use App\API\TroubleFreeException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
 
@@ -80,17 +81,23 @@ class Order extends Model
 
                 foreach($order->data['line_items'] as $line) {
                     $orderLines[] = [
-                        'article'  => Product::where('woocommerce_id', $line['product_id'])->first()->external_id,
-                        'quantity' => strval( $line['quantity'] ),
-                        'price'    => strval( floatval( $line['total'] ) / floatval( $line['quantity'] ) ),
+                        'article'   => Product::where('woocommerce_id', $line['product_id'])->first()->external_id,
+                        'quantity'  => strval( $line['quantity'] ),
+                        // 'price'     => strval( floatval( $line['total'] ) / floatval( $line['quantity'] ) ),
+                        'unitPrice' => [
+                            'inclVat' => strval( floatval( $line['total'] ) / floatval( $line['quantity'] ) ),
+                        ],
                     ];
                 }
 
                 foreach($order->data['shipping_lines'] as $line) {
                     $orderLines[] = [
-                        'article'  => Setting::get('troublefree_shipping_product_id'),
-                        'quantity' => '1',
-                        'price'    => strval( floatval( $line['total'] ) ),
+                        'article'   => Setting::get('troublefree_shipping_product_id'),
+                        'quantity'  => '1',
+                        // 'price'     => strval( floatval( $line['total'] ) ),
+                        'unitPrice' => [
+                            'inclVat' => strval( floatval( $line['total'] ) ),
+                        ],
                     ];
                 }
 
@@ -112,20 +119,26 @@ class Order extends Model
                     // 'invoicingCondition' => 6,
                 ]);
 
-                $payment_response = TroubleFree::request('post', '/orders/' . $response['data']['id'] . '/payments', [
-                    'amount'   => $order->data['total'],
-                    'method'   => 3,
-                    'currency' => 1,
-                ]);
-
-                Log::info('Order exported to TroubleFree', [
-                    'response' => $response,
-                    'payment_response' => $payment_response,
-                ]);
-
-                if($response['status'] == 201) {
+                try {
+                    $payment_response = TroubleFree::request('post', '/orders/' . $response['data']['id'] . '/payments', [
+                        'amount'   => $order->data['total'],
+                        'method'   => 3,
+                        'currency' => 1,
+                    ]);
+    
+                    Log::info('Order exported to TroubleFree', [
+                        'response' => $response,
+                        'payment_response' => $payment_response,
+                    ]);
+    
                     $order->is_exported = true;
                     $order->save();
+                } catch(TroubleFreeException $e) {
+                    Log::error('Order export to TroubleFree failed', [
+                        'response' => $response,
+                        'payment_response' => $payment_response,
+                        'exception' => $e,
+                    ]);
                 }
             }
         });

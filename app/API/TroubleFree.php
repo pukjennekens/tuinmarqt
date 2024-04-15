@@ -59,7 +59,7 @@ class TroubleFree
      * @param array $data The data to send with the request, if it's a GET request, this will be used as query parameters
      * @param bool $cache Whether to cache the response internally
      * @param int $ttl The time-to-live of the cache
-     *
+     * @throws TroubleFreeException If the API request fails
      * @return mixed The response from the API
      */
     public static function request(
@@ -82,6 +82,8 @@ class TroubleFree
         Log::debug('Received data from TroubleFree API', ['status' => $response->status(), 'data' => $response->json()]);
 
         if($cache && $response->status() == 200) Cache::put($cacheKey, $response->json(), $ttl);
+
+        if( ! in_array( $response->status(), [200, 201] ) ) throw new TroubleFreeException('TroubleFree API request failed', $response->status(), $response->json());
 
         return $response->json();
     }
