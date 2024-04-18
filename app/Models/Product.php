@@ -63,11 +63,11 @@ class Product extends Model
                     'value' => $this->data['unit'] ?? '',
                 ],
             ],
-            'images'            => $this->images->map(function($image) {
-                return [
-                    'src' => route('image', ['id' => $image->external_id]) . '.jpeg',
-                ];
-            })->toArray(),
+            // 'images'            => $this->images->map(function($image) {
+            //     return [
+            //         'src' => route('image', ['id' => $image->external_id]) . '.jpeg',
+            //     ];
+            // })->toArray(),
         ];
 
         if($this->woocommerce_id) $data['id'] = $this->woocommerce_id;
@@ -77,6 +77,13 @@ class Product extends Model
                 'length' => $this->data['dimensions']['length'] ?? 0,
                 'width'  => $this->data['dimensions']['width'] ?? 0,
                 'height' => $this->data['dimensions']['height'] ?? 0,
+            ];
+        }
+
+        if(isset($this->data['piecesPerUnit'])) {
+            $data['meta_data'][] = [
+                'key'   => 'pieces_per_unit',
+                'value' => $this->data['piecesPerUnit'],
             ];
         }
 
