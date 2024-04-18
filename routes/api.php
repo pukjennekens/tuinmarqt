@@ -6,7 +6,7 @@ use App\Jobs\ExportArticleGroups;
 use App\Jobs\ExportArticles;
 use App\Jobs\ImportArticleGroups;
 use App\Jobs\ImportArticles;
-use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\Route;
 
 Route::post('/webhook', [WebhookController::class, 'handle'])
