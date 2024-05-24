@@ -7,6 +7,7 @@ use App\Jobs\ExportArticleGroups;
 use App\Jobs\ExportArticles;
 use App\Jobs\ImportArticleGroups;
 use App\Jobs\ImportArticles;
+use App\Models\Setting;
 
 use Illuminate\Support\Facades\Route;
 
@@ -14,10 +15,11 @@ Route::post('/webhook', [WebhookController::class, 'handle'])
     ->middleware(EnsureWooCommerceWebhookSignatureValid::class);
 
 Route::get('/test', function() {
-    $woocommerce = WooCommerce::getClient();
-    $products = $woocommerce->get('products');
-    
-    return response()->json($products);
+    return [
+        Setting::get('woocommerce_website_url'),
+        Setting::get('woocommerce_consumer_key'),
+        Setting::get('woocommerce_consumer_secret'),
+    ];
 });
 
 Route::get('/import', function() {
