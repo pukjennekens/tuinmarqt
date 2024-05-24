@@ -1,5 +1,6 @@
 <?php
 
+use App\API\WooCommerce;
 use App\Http\Controllers\WebhookController;
 use App\Http\Middleware\EnsureWooCommerceWebhookSignatureValid;
 use App\Jobs\ExportArticleGroups;
@@ -11,6 +12,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/webhook', [WebhookController::class, 'handle'])
     ->middleware(EnsureWooCommerceWebhookSignatureValid::class);
+
+Route::get('/test', function() {
+    $woocommerce = WooCommerce::getClient();
+    $products = $woocommerce->get('products');
+    
+    return response()->json($products);
+});
 
 Route::get('/import', function() {
     dispatch(new ImportArticleGroups());
