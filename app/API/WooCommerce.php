@@ -47,6 +47,7 @@ class WooCommerce
             'version'    => 'wc/v3',
             'verify_ssl' => true, // env('APP_ENV') === 'production',
             'timeout'    => 120,
+            'query_string_auth' => true,
         ]);
 
         self::$client = $client;
