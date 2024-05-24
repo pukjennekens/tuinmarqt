@@ -15,10 +15,12 @@ Route::post('/webhook', [WebhookController::class, 'handle'])
     ->middleware(EnsureWooCommerceWebhookSignatureValid::class);
 
 Route::get('/test', function() {
+    $products = WooCommerce::getClient()->get('products');
     return [
         Setting::get('woocommerce_website_url'),
         Setting::get('woocommerce_consumer_key'),
         Setting::get('woocommerce_consumer_secret'),
+        $products,
     ];
 });
 

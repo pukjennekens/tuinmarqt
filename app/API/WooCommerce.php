@@ -45,7 +45,7 @@ class WooCommerce
 
         $client = new Client($woocommerce_website_url, $woocommerce_consumer_key, $woocommerce_consumer_secret, [
             'version'    => 'wc/v3',
-            'verify_ssl' => env('APP_ENV') === 'production',
+            'verify_ssl' => false, // env('APP_ENV') === 'production',
             'timeout'    => 120,
         ]);
 
