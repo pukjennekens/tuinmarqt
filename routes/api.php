@@ -21,7 +21,7 @@ Route::get('/test', function() {
         Setting::get('woocommerce_consumer_secret'),
     ]);
     $products = WooCommerce::getClient()->get('products');
-    throw new \Exception('test');
+
     return [
         Setting::get('woocommerce_website_url'),
         Setting::get('woocommerce_consumer_key'),
